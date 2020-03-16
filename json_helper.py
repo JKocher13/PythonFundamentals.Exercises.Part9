@@ -4,31 +4,31 @@ import pickle
 
 def read_json(path):
     file_name = path
-    with open(file_name,r) as f:
+    with open(file_name) as f:
         data = json.loads(f)
     return data
 
- def read_all_json_files(path):
- 	all_files =[]
- 	for x in os.listdir(path):
- 		indiv_path=os.path(x)
- 		y = read_json(indiv_path)
- 		all_files.append(y)
- 	return all_files
+
+def read_all_json_files(json_root):
+	for root, _, files in os.walk(json_root):
+		result = []
+		for f in files:
+			if f.endswith('.json'):
+				json_content = read_json(os.path.join(json_root, f))
+				result.append(json_content)
+	return result
 
 
- def write_pickle(path, data):
- 	path = os.path.join(path,super_smash_characters.pickle)
- 	pick_dump(data , path)
-
- def load_pickle(path):
- 	return pickle.loads(path)
+def write_pickle(file_path, data):
+	with open(file_path, "wb") as handler:
+		pickle.dump(data, handler)
 
 
+def load_pickle(file_path):
+	with open(file_path, 'rb') as handler:
+		data = pickle.load(handler)
+	return data
 
 
 
 
-read_json("/Users/jkocher/Documents/PythonProjects/PythonFundamentals.Exercises.Part9/data/super_smash_bros/link.json")
-
-read_all_json_files("/Users/jkocher/Documents/PythonProjects/PythonFundamentals.Exercises.Part9/data/super_smash_bros")
